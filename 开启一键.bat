@@ -13,9 +13,20 @@ if /i not "%~1"=="--direct" (
 if /i "%~1"=="--direct" shift
 
 set "SCRIPT_DIR=%~dp0"
-cd /d "%SCRIPT_DIR%"
+set "PROJECT_DIR="
+if exist "%SCRIPT_DIR%setup.py" set "PROJECT_DIR=%SCRIPT_DIR%"
+if not defined PROJECT_DIR if exist "%SCRIPT_DIR%edge-tts\setup.py" set "PROJECT_DIR=%SCRIPT_DIR%edge-tts\"
 
-echo [OK] 当前目录: %CD%
+if not defined PROJECT_DIR (
+    echo [错误] 在当前路径未找到 edge-tts 项目。
+    echo [提示] 当前脚本路径: %SCRIPT_DIR%
+    echo [提示] 请把本 .bat 放到 edge-tts 项目根目录，或放在其上一级目录。
+    echo [提示] 例如: C:\Users\Administrator\Desktop\edge-tts
+    goto :end_fail
+)
+
+cd /d "%PROJECT_DIR%"
+echo [OK] 项目目录: %CD%
 
 set "PY_CMD="
 where python >nul 2>&1 && set "PY_CMD=python"
