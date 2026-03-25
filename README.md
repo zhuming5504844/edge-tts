@@ -74,3 +74,29 @@ Other projects that use the `edge-tts` module include:
 * [hass-edge-tts](https://github.com/hasscc/hass-edge-tts/blob/main/custom_components/edge_tts/tts.py)
 * [Podcastfy](https://github.com/souzatharsis/podcastfy/blob/main/podcastfy/tts/providers/edge.py)
 * [tts-samples](https://github.com/yaph/tts-samples/blob/main/bin/create_sound_samples.py) - a collection of [mp3 sound samples](https://github.com/yaph/tts-samples/tree/main/mp3) to facilitate picking a voice for your project.
+
+
+## GUI (No Command Line)
+
+This repository now includes a desktop GUI script: `gui.py`.
+
+### Features
+
+- Text input panel with scroll support
+- Voice loading + keyword filtering
+- Adjustable `rate`, `volume`, `pitch`
+- Optional subtitle (`.srt`) generation
+- Custom output path for audio and subtitles
+- Background synthesis so the UI stays responsive
+
+### Quick start (Windows)
+
+1. Double-click `一键安装GUI环境.bat` to create `.venv` and install dependencies.
+2. Double-click `开启一键.bat` to launch the GUI.
+3. Enter text, pick a voice, then click **开始合成**.
+
+### Build one-click EXE (Windows)
+
+1. Run `一键安装GUI环境.bat` first.
+2. Double-click `一键打包GUI为EXE.bat`.
+3. Find executable at `dist/edge-tts-gui.exe`.
