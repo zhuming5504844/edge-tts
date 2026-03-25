@@ -1,0 +1,7 @@
+# 使用清华镜像安装 GUI 相关依赖:
+# pip install -r requirements-gui.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
+edge-tts
+aiohttp
+certifi
+typing-extensions
+pyinstaller>=6.0
