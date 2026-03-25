@@ -2,6 +2,16 @@
 setlocal EnableExtensions
 chcp 65001 >nul
 
+
+if /i not "%~1"=="--direct" (
+    echo %CMDCMDLINE% | findstr /i /c:"/c" >nul
+    if not errorlevel 1 (
+        start "edge-tts 一键启动" cmd /k call ""%~f0" --direct %*"
+        exit /b
+    )
+)
+if /i "%~1"=="--direct" shift
+
 set "SCRIPT_DIR=%~dp0"
 cd /d "%SCRIPT_DIR%"
 
