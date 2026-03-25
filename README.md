@@ -74,3 +74,59 @@ Other projects that use the `edge-tts` module include:
 * [hass-edge-tts](https://github.com/hasscc/hass-edge-tts/blob/main/custom_components/edge_tts/tts.py)
 * [Podcastfy](https://github.com/souzatharsis/podcastfy/blob/main/podcastfy/tts/providers/edge.py)
 * [tts-samples](https://github.com/yaph/tts-samples/blob/main/bin/create_sound_samples.py) - a collection of [mp3 sound samples](https://github.com/yaph/tts-samples/tree/main/mp3) to facilitate picking a voice for your project.
+
+## GUI (图形界面，无需命令行)
+
+仓库已提供 `gui.py`，用于在桌面界面中完成文本转语音。
+
+### 功能
+
+- 语音列表在线加载与关键字筛选（支持按语音名 / 区域检索）
+- 文本输入框（大文本）
+- 语速 / 音调 / 音量可视化调节
+- 音频输出路径选择（MP3）
+- 可选导出字幕元数据（`.jsonl`）
+
+### 1) 安装依赖（清华镜像）
+
+Windows 下直接双击执行：
+
+```bat
+install_gui_env.bat
+```
+
+该脚本会自动：
+
+1. 创建 `.venv`
+2. 安装依赖（使用清华镜像）
+
+等效命令：
+
+```bash
+pip install edge-tts -i https://pypi.tuna.tsinghua.edu.cn/simple
+pip install -r requirements-gui.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
+```
+
+### 2) 运行 GUI
+
+```bat
+run_gui.bat
+```
+
+或：
+
+```bash
+.venv/Scripts/python gui.py
+```
+
+### 3) 一键打包 EXE
+
+```bat
+build_exe.bat
+```
+
+打包结果默认输出到：
+
+```text
+dist/EdgeTTS-GUI/EdgeTTS-GUI.exe
+```
