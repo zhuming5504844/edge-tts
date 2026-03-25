@@ -1,5 +1,5 @@
 @echo off
-setlocal EnableExtensions EnableDelayedExpansion
+setlocal EnableExtensions
 chcp 65001 >nul
 
 set "SCRIPT_DIR=%~dp0"
@@ -7,15 +7,19 @@ cd /d "%SCRIPT_DIR%"
 
 echo [OK] 当前目录: %CD%
 
-where python >nul 2>&1
-if errorlevel 1 (
+set "PY_CMD="
+where python >nul 2>&1 && set "PY_CMD=python"
+if not defined PY_CMD (
+    where py >nul 2>&1 && set "PY_CMD=py -3"
+)
+if not defined PY_CMD (
     echo [错误] 未检测到 Python，请先安装 Python 3.9+ 并勾选 ^"Add Python to PATH^"。
     goto :end_fail
 )
 
 if not exist ".venv\Scripts\python.exe" (
     echo [环境] 正在创建 .venv 虚拟环境...
-    python -m venv .venv
+    %PY_CMD% -m venv .venv
     if errorlevel 1 (
         echo [错误] 创建虚拟环境失败。
         goto :end_fail
@@ -24,18 +28,21 @@ if not exist ".venv\Scripts\python.exe" (
 
 echo [OK] 虚拟环境已就绪
 
-set "PYTHON=.venv\Scripts\python.exe"
-set "PIP=.venv\Scripts\python.exe -m pip"
+call ".venv\Scripts\activate.bat"
+if errorlevel 1 (
+    echo [错误] 激活虚拟环境失败。
+    goto :end_fail
+)
 
 echo [依赖] 安装/更新 pip...
-%PIP% install --upgrade pip
+python -m pip install --upgrade pip
 if errorlevel 1 (
     echo [错误] pip 更新失败。
     goto :end_fail
 )
 
 echo [依赖] 安装/更新 edge-tts...
-%PIP% install -e .
+python -m pip install -e .
 if errorlevel 1 (
     echo [错误] edge-tts 安装失败。
     goto :end_fail
@@ -45,8 +52,8 @@ echo [OK] Python 依赖已就绪
 
 where ffmpeg >nul 2>&1
 if errorlevel 1 (
-    echo [提示] 未检测到 ffmpeg，edge-playback 可能无法播放。
-    echo [提示] 可执行: winget install --id Gyan.FFmpeg -e
+    echo [提示] 未检测到 ffmpeg，若你需要 mpv 播放可安装:
+    echo [提示] winget install --id Gyan.FFmpeg -e
 ) else (
     echo [OK] ffmpeg 已就绪
 )
@@ -60,17 +67,22 @@ if "%~1"=="" (
     set "TEXT=%*"
 )
 
-%PYTHON% -m edge_playback --text "%TEXT%"
+edge-playback --text "%TEXT%"
 if errorlevel 1 (
     echo [错误] 启动失败，请查看上方日志。
     goto :end_fail
 )
 
 echo [OK] 已退出。
-goto :eof
+goto :end_ok
 
 :end_fail
 echo.
 echo [失败] 执行中断，请按任意键退出。
 pause >nul
 exit /b 1
+
+:end_ok
+echo [完成] 请按任意键关闭窗口。
+pause >nul
+exit /b 0
